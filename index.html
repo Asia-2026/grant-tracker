@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Research Grant Tracker 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 16px; color: #1a1a1a; }
+    .header { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 14px; }
+    .header h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .header p { font-size: 13px; color: #666; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .stat { background: #f0f0f0; border-radius: 8px; padding: 14px; text-align: center; }
+    .stat-num { font-size: 22px; font-weight: 600; color: #1a3a52; }
+    .stat-lbl { font-size: 12px; color: #666; margin-top: 2px; }
+    .controls { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 14px; margin-bottom: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .controls input, .controls select { flex: 1; min-width: 140px; font-size: 13px; padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; background: #fafafa; color: #1a1a1a; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+    .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.2s, box-shadow 0.2s; }
+    .card:hover { border-color: #1a3a52; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .card-top { padding: 14px 14px 10px; border-bottom: 1px solid #f0f0f0; }
+    .badge-row { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+    .badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 99px; }
+    .badge-org { background: #e8f0fe; color: #1a3a52; }
+    .badge-cat { background: #f0f0f0; color: #555; }
+    .card-title { font-size: 14px; font-weight: 600; color: #1a1a1a; line-height: 1.4; }
+    .card-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .deadline { font-size: 12px; color: #888; }
+    .deadline span { font-weight: 600; color: #1a3a52; }
+    .desc { font-size: 13px; color: #555; line-height: 1.5; flex: 1; }
+    .link-btn { display: block; text-align: center; padding: 9px; font-size: 13px; font-weight: 600; color: #1a3a52; border: 1px solid #1a3a52; border-radius: 8px; text-decoration: none; margin-top: 4px; transition: background 0.15s; }
+    .link-btn:hover { background: #e8f0fe; }
+
+    .empty { grid-column: 1/-1; text-align: center; padding: 32px; color: #888; font-size: 14px; }
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: repeat(3, 1fr); }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎓 India Research Grant Tracker 2026</h1>
+
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="visCount">12</div><div class="stat-lbl">Active Grants</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-lbl">Organizations</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Categories</div></div>
+</div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="🔍 Search grants...">
+  <select id="orgFilter">
+    <option value="">All Organizations</option>
+    <option>DBT</option><option>ICMR</option><option>SERB</option>
+    <option>DST</option><option>ICSSR</option><option>CSIR</option>
+  </select>
+  <select id="catFilter">
+    <option value="">All Categories</option>
+    <option>Biomedical &amp; Health</option>
+    <option>Science &amp; Engineering</option>
+    <option>Social Sciences &amp; Policy</option>
+    <option>Innovation &amp; Entrepreneurship</option>
+  </select>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const grants = [
+  { title: "DBT/WT India Alliance Phase III", org: "DBT", cat: "Biomedical & Health", deadline: "2026-06-30", desc: "Early Career, Intermediate & Senior Fellowships for biomedical research. ECF: up to INR 3.6 Cr; IF: up to INR 4.5 Cr. Salary, research funds, travel support included.", url: "https://www.indiaalliance.org/phase-iii/competitions" },
+  { title: "ICMR HRD Scheme 2026-27", org: "ICMR", cat: "Biomedical & Health", deadline: "2026-06-30", desc: "Long Term & Short Term Fellowships Abroad for medical/clinical/health sciences researchers under DHR.", url: "https://www.icmr.gov.in/fellowships" },
+  { title: "SERB Core Research Grant (CRG)", org: "SERB", cat: "Science & Engineering", deadline: "Rolling", desc: "Individual/group researcher grants for 3 years in all frontier areas of Science & Engineering. Apply via SERB-PRISM portal.", url: "https://prism.serbonline.in/RS-CRG" },
+  { title: "DST-iTBI Ignition Grant", org: "DST", cat: "Innovation & Entrepreneurship", deadline: "2026-06-15", desc: "Early-stage innovators in DeepTech, AI/ML, AgriTech, Sustainability with mentorship and incubation support.", url: "https://dst.gov.in/call-for-proposals" },
+  { title: "ANRF-Ramanujan Fellowship 2026", org: "DST", cat: "Science & Engineering", deadline: "2026-12-31", desc: "For Indian scientists/engineers working abroad to return. Rs.1.35L/month + Rs.27L/yr research grant for 5 years.", url: "https://anrfonline.in/ANRF/Ramanujan_fellowship?HomePage=New" },
+  { title: "ICSSR Major & Minor Research Projects", org: "ICSSR", cat: "Social Sciences & Policy", deadline: "Varies (April–June)", desc: "Research projects in economics, governance, social sciences, environment, humanities. Apply via app.icssr.org.", url: "https://icssr.org/research-projects" },
+  { title: "ICSSR Development Grants", org: "ICSSR", cat: "Social Sciences & Policy", deadline: "Twice a year", desc: "Grants for organizations engaged in socio-economic research to strengthen institutional capacity.", url: "https://icssr.org/grants" },
+  { title: "ICSSR Postdoctoral Fellowship", org: "ICSSR", cat: "Social Sciences & Policy", deadline: "Varies (April–June)", desc: "2-year fellowship, Rs.31,000/month + Rs.25,000/yr contingency. For scholars below 45 years.", url: "https://icssr.org/post-doctoral-fellowship" },
+  { title: "ICSSR Senior Fellowship", org: "ICSSR", cat: "Social Sciences & Policy", deadline: "Varies (April–June)", desc: "2-year fellowship, Rs.45,000/month + Rs.40,000/yr contingency for senior social science researchers.", url: "https://icssr.org/senior-fellowship" },
+  { title: "CSIR Sponsored Research Schemes (EMR)", org: "CSIR", cat: "Science & Engineering", deadline: "Rolling", desc: "Research support for professors/experts in universities, IITs, R&D labs. Covers JRFs, SRFs, contingencies & equipment.", url: "https://www.csirhrdg.res.in/Home/Index/1/Default/3283/63" },
+  { title: "CSIR-HRDG Symposium Grants", org: "CSIR", cat: "Science & Engineering", deadline: "Rolling", desc: "Financial assistance for organizing scientific symposia/events. Travel and venue support provided.", url: "https://csirhrdg.res.in/Home/Index/1/default/13/20" },
+  { title: "CSIR Research Fellowship & Associateship", org: "CSIR", cat: "Innovation & Entrepreneurship", deadline: "Rolling", desc: "JRF/SRF/RA fellowship program for researchers in science & technology domains.", url: "https://www.csirhrdg.res.in/Home/Index/1/Default/3319/61" }
+];
+
+function fmtDate(d) {
+  if (!d.match(/^\d{4}-\d{2}-\d{2}$/)) return d;
+  return new Date(d).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function render() {
+  const s = document.getElementById('search').value.toLowerCase();
+  const o = document.getElementById('orgFilter').value;
+  const c = document.getElementById('catFilter').value;
+  const filtered = grants.filter(g =>
+    (!s || g.title.toLowerCase().includes(s) || g.desc.toLowerCase().includes(s) || g.cat.toLowerCase().includes(s)) &&
+    (!o || g.org === o) &&
+    (!c || g.cat === c)
+  );
+  document.getElementById('visCount').textContent = filtered.length;
+  const grid = document.getElementById('grid');
+  if (!filtered.length) { grid.innerHTML = '<div class="empty">No grants match your filters.</div>'; return; }
+  grid.innerHTML = filtered.map(g => `
+    <div class="card">
+      <div class="card-top">
+        <div class="badge-row">
+          <span class="badge badge-org">${g.org}</span>
+          <span class="badge badge-cat">${g.cat}</span>
+        </div>
+        <div class="card-title">${g.title}</div>
+      </div>
+      <div class="card-body">
+        <div class="deadline">📅 Deadline: <span>${fmtDate(g.deadline)}</span></div>
+        <div class="desc">${g.desc}</div>
+        <a class="link-btn" href="${g.url}" target="_blank" rel="noopener">🌐 Official Application Page →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('orgFilter').addEventListener('change', render);
+document.getElementById('catFilter').addEventListener('change', render);
+render();
+</script>
+</body>
+</html>
