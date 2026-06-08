@@ -42,16 +42,18 @@
 </div>
 
 <div class="stats">
-  <div class="stat"><div class="stat-num" id="visCount">6</div><div class="stat-lbl">Active Grants</div></div>
-  <div class="stat"><div class="stat-num" id="orgCount">4</div><div class="stat-lbl">Organizations</div></div>
-  <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">Categories</div></div>
+  <div class="stat"><div class="stat-num" id="visCount">11</div><div class="stat-lbl">Active Grants</div></div>
+  <div class="stat"><div class="stat-num" id="orgCount">5</div><div class="stat-lbl">Organizations</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Categories</div></div>
 </div>
 
 <div class="controls">
   <input type="text" id="search" placeholder="🔍 Search grants...">
   <select id="orgFilter">
     <option value="">All Organizations</option>
+    <option>DBT</option>
     <option>ICMR</option>
+    <option>ANRF</option>
     <option>SERB</option>
     <option>DST</option>
     <option>CSIR</option>
@@ -61,6 +63,7 @@
     <option>Biomedical &amp; Health</option>
     <option>Science &amp; Engineering</option>
     <option>Innovation &amp; Entrepreneurship</option>
+    <option>International Collaboration</option>
   </select>
 </div>
 
@@ -69,18 +72,56 @@
 <script>
 const grants = [
   {
-    title: "ICMR HRD Scheme 2026-27",
+    title: "DBT-BIRAC Bio-AI Hubs Rolling Call (BioE3)",
+    org: "DBT", cat: "Biomedical & Health",
+    deadlineLabel: "30 Jun 2026 (midnight)",
+    urgent: true,
+    desc: "Rolling call to establish Bio-AI Hubs under BioE3 policy for biomanufacturing. Focus: Biomolecular Design, Sustainable Agriculture, Synthetic Biology, Ayurveda & Genomics Diagnostics. Open to academia, industry, startups & LLPs. Submit online at birac.nic.in only.",
+    url: "https://birac.nic.in/cfp_view.php?id=114&scheme_type=46"
+  },
+  {
+    title: "ICMR HRD Scheme 2026-27 (Long & Short Term Fellowships Abroad)",
     org: "ICMR", cat: "Biomedical & Health",
-    deadline: "2026-06-30",
     deadlineLabel: "30 Jun 2026",
     urgent: true,
-    desc: "Long Term & Short Term Fellowships Abroad under DHR for health researchers. Deadline June 30, 2026 — confirmed directly from ICMR Call for Proposals table.",
+    desc: "Long Term & Short Term Fellowships Abroad under DHR for health researchers. Confirmed from ICMR Call for Proposals table. Apply via ICMR portal.",
     url: "https://www.icmr.gov.in/call-for-proposals"
+  },
+  {
+    title: "ICMR TB Research Accelerator Program",
+    org: "ICMR", cat: "Biomedical & Health",
+    deadlineLabel: "2 Jul 2026",
+    urgent: true,
+    desc: "EOI for Development and Validation of Diagnostics, Treatment Regimens, Preventive Strategies and Implementation Research for Management of Tuberculosis.",
+    url: "https://www.icmr.gov.in/call-for-proposals"
+  },
+  {
+    title: "ICMR — Nutrient-Dense Food Products for Anaemia Prevention",
+    org: "ICMR", cat: "Biomedical & Health",
+    deadlineLabel: "3 Jul 2026",
+    urgent: false,
+    desc: "Request for Proposals for Development of Aspirational Nutrient-Dense Food Products for Adolescent Girls and Women of Reproductive Age (WRA) to Prevent Anaemia.",
+    url: "https://www.icmr.gov.in/call-for-proposals"
+  },
+  {
+    title: "ICMR Cancer Prevention EOI (Jammu & Kashmir)",
+    org: "ICMR", cat: "Biomedical & Health",
+    deadlineLabel: "25 Jun 2026, 17:00 hrs",
+    urgent: true,
+    desc: "Expression of Interest for Prevention and Screening of Oral, Breast, Cervical and Gastrointestinal Cancers in Jammu and Kashmir.",
+    url: "https://www.icmr.gov.in/call-for-proposals"
+  },
+  {
+    title: "11th GACD Call — Multisectoral Approaches for NCDs",
+    org: "ICMR", cat: "International Collaboration",
+    deadlineLabel: "17 Jun 2026",
+    urgent: true,
+    desc: "Global Alliance for Chronic Diseases (GACD) call on Multisectoral Approaches for Non-Communicable Diseases. International collaborative research call facilitated via ICMR.",
+    url: "https://www.gacd.org/funding/current-call-for-applications"
   },
   {
     title: "SERB Core Research Grant (CRG)",
     org: "SERB", cat: "Science & Engineering",
-    deadline: null,
     deadlineLabel: "Rolling — check portal for open call",
     urgent: false,
     desc: "3-year research grants for individual researchers in all frontier areas of Science & Engineering. Covers equipment, manpower, consumables, travel.",
@@ -89,16 +130,14 @@ const grants = [
   {
     title: "ANRF-Ramanujan Fellowship 2026",
     org: "DST", cat: "Science & Engineering",
-    deadline: null,
     deadlineLabel: "Open year-round — no fixed deadline",
     urgent: false,
-    desc: "For brilliant Indian scientists/engineers working abroad to return to India. Rs.1.35L/month + Rs.7L/yr research grant for 5 years. Nominations accepted anytime via ANRF portal.",
+    desc: "For Indian scientists/engineers working abroad to return to India. Rs.1.35L/month + Rs.7L/yr research grant for 5 years. Nominations accepted anytime via ANRF portal.",
     url: "https://anrfonline.in/ANRF/Ramanujan_fellowship?HomePage=New"
   },
   {
     title: "CSIR Sponsored Research Schemes (EMR)",
     org: "CSIR", cat: "Science & Engineering",
-    deadline: null,
     deadlineLabel: "Rolling — submit on EMR-II portal",
     urgent: false,
     desc: "Research support for professors/experts in universities, IITs, and R&D labs. Funds JRFs, SRFs, contingencies & equipment. Proposals submitted to CSIR-HRDG.",
@@ -107,7 +146,6 @@ const grants = [
   {
     title: "CSIR-HRDG Symposium Grants",
     org: "CSIR", cat: "Science & Engineering",
-    deadline: null,
     deadlineLabel: "Rolling — apply 2 months before event",
     urgent: false,
     desc: "Financial assistance for organizing scientific symposia and conferences. Application must reach CSIR-HRDG at least 2 months before the event date.",
@@ -116,7 +154,6 @@ const grants = [
   {
     title: "CSIR JRF / SRF / Research Associateship",
     org: "CSIR", cat: "Innovation & Entrepreneurship",
-    deadline: null,
     deadlineLabel: "Rolling — via CSIR-UGC NET / GATE",
     urgent: false,
     desc: "JRF-NET, JRF-GATE, SRF-Direct and Research Associateship (RA) programs for researchers in S&T. Fellowship claims via Fellow AMS portal.",
