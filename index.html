@@ -9,6 +9,7 @@
     body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 16px; color: #1a1a1a; }
     .header { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 14px; }
     .header h1 { font-size: 20px; font-weight: 600; }
+    .header .updated { font-size: 12px; color: #888; margin-top: 4px; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
     .stat { background: #f0f0f0; border-radius: 8px; padding: 14px; text-align: center; }
     .stat-num { font-size: 22px; font-weight: 600; color: #1a3a52; }
@@ -39,11 +40,12 @@
 
 <div class="header">
   <h1>🎓 India Research Grant Tracker 2026</h1>
+  <div class="updated">Verified open as of 18 June 2026 — expired calls removed</div>
 </div>
 
 <div class="stats">
-  <div class="stat"><div class="stat-num" id="visCount">11</div><div class="stat-lbl">Active Grants</div></div>
-  <div class="stat"><div class="stat-num" id="orgCount">5</div><div class="stat-lbl">Organizations</div></div>
+  <div class="stat"><div class="stat-num" id="visCount">9</div><div class="stat-lbl">Active Grants</div></div>
+  <div class="stat"><div class="stat-num" id="orgCount">4</div><div class="stat-lbl">Organizations</div></div>
   <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Categories</div></div>
 </div>
 
@@ -54,9 +56,7 @@
     <option>DBT</option>
     <option>ICMR</option>
     <option>ANRF</option>
-    <option>SERB</option>
-    <option>DST</option>
-    <option>CSIR</option>
+    <option>ICSSR</option>
   </select>
   <select id="catFilter">
     <option value="">All Categories</option>
@@ -72,60 +72,76 @@
 <script>
 const grants = [
   {
-    title: "DBT-BIRAC Bio-AI Hubs Rolling Call (BioE3)",
+    title: "DBT-BIRAC Bio-AI Hubs Rolling Call (BioE3 Policy)",
     org: "DBT", cat: "Biomedical & Health",
     deadlineLabel: "30 Jun 2026 (midnight)",
     urgent: true,
-    desc: "Rolling call to establish Bio-AI Hubs under BioE3 policy for biomanufacturing. Focus: Biomolecular Design, Sustainable Agriculture, Synthetic Biology, Ayurveda & Genomics Diagnostics. Open to academia, industry, startups & LLPs. Submit online at birac.nic.in only.",
+    desc: "Rolling call to establish Bio-AI Hubs under BioE3 policy for biomanufacturing. Focus: Biomolecular Design, Sustainable Agriculture, Synthetic Biology, Ayurveda & Genomics Diagnostics. Open to academia, industry, startups & LLPs. Proposals evaluated periodically on a rolling basis. Note: BIRAC site was under maintenance 15–18 June 2026.",
     url: "https://birac.nic.in/cfp_view.php?id=114&scheme_type=46"
   },
   {
-    title: "ICMR HRD Scheme 2026-27 (Long & Short Term Fellowships Abroad)",
+    title: "ICMR HRD Scheme 2026-27 — Long & Short Term Fellowships Abroad",
     org: "ICMR", cat: "Biomedical & Health",
     deadlineLabel: "30 Jun 2026",
     urgent: true,
-    desc: "Long Term & Short Term Fellowships Abroad under DHR for health researchers. Confirmed from ICMR Call for Proposals table. Apply via ICMR portal.",
-    url: "https://www.icmr.gov.in/call-for-proposals"
+    desc: "Call for Proposals for Long Term & Short Term Fellowships Abroad under HRD Schemes for the Financial Year 2026–27. For health research personnel, age below 57 years. Direct link to the official call PDF.",
+    url: "https://www.icmr.gov.in/icmrobject/uploads/Documents/1777270497_1776842672_call_shortterm_longterm.pdf"
   },
   {
-    title: "ICMR TB Research Accelerator Program",
+    title: "ICMR TB Research Accelerator Program — EOI",
     org: "ICMR", cat: "Biomedical & Health",
     deadlineLabel: "2 Jul 2026",
     urgent: true,
-    desc: "EOI for Development and Validation of Diagnostics, Treatment Regimens, Preventive Strategies and Implementation Research for Management of Tuberculosis.",
-    url: "https://www.icmr.gov.in/call-for-proposals"
+    desc: "EOI for Development and Validation of Diagnostics, Treatment Regimens, Preventive Strategies and Implementation Research for Management of Tuberculosis. Direct link to the official EOI document.",
+    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1780383566_eoiforconceptproposalsonpriorityresearchtopicsintb.pdf"
   },
   {
     title: "ICMR — Nutrient-Dense Food Products for Anaemia Prevention",
     org: "ICMR", cat: "Biomedical & Health",
     deadlineLabel: "3 Jul 2026",
     urgent: false,
-    desc: "Request for Proposals for Development of Aspirational Nutrient-Dense Food Products for Adolescent Girls and Women of Reproductive Age (WRA) to Prevent Anaemia.",
-    url: "https://www.icmr.gov.in/call-for-proposals"
+    desc: "Request for Proposals (ICMR–Gates Foundation Grand Challenge) for Development of Aspirational Nutrient-Dense Food Products for Adolescent Girls and Women of Reproductive Age (WRA) to Prevent Anaemia. Direct link to the official RFP document.",
+    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1780480057_grandchallengecall-june2.pdf"
   },
   {
     title: "ICMR Cancer Prevention EOI (Jammu & Kashmir)",
     org: "ICMR", cat: "Biomedical & Health",
     deadlineLabel: "25 Jun 2026, 17:00 hrs",
     urgent: true,
-    desc: "Expression of Interest for Prevention and Screening of Oral, Breast, Cervical and Gastrointestinal Cancers in Jammu and Kashmir.",
+    desc: "Expression of Interest for Prevention and Screening of Oral, Breast, Cervical and Gastrointestinal Cancers in Jammu and Kashmir. Direct link to the official EOI document.",
+    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1779701900_eoi_2jk25052026.pdf"
+  },
+  {
+    title: "ICMR Breast Cancer Study — Improve Survival in J&K (EOI)",
+    org: "ICMR", cat: "Biomedical & Health",
+    deadlineLabel: "⚠ 19 Jun 2026, 17:00 hrs — closes tomorrow",
+    urgent: true,
+    desc: "Expression of Interest for Participation in 'Breast Cancer study to Improve Survival in the UT of Jammu & Kashmir.' Extremely tight deadline — verify directly via the official document before relying on this date.",
+    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1779275756_eoi_1jk_20052026.pdf"
+  },
+  {
+    title: "ICMR Special Call — Centres for Advanced Research (CAR) on Medical Devices",
+    org: "ICMR", cat: "Biomedical & Health",
+    deadlineLabel: "15 Jul 2026, 17:00 hrs",
+    urgent: false,
+    desc: "Special Call for Proposals for establishment of ICMR Centres for Advanced Research (CAR) for Development of Priority Medical Devices and Diagnostic Technologies. Exact PDF for this 2026 call could not be independently verified — link goes to ICMR's official Call for Proposals listing page where it is posted; please confirm the document there before applying.",
     url: "https://www.icmr.gov.in/call-for-proposals"
   },
   {
-    title: "11th GACD Call — Multisectoral Approaches for NCDs",
-    org: "ICMR", cat: "International Collaboration",
-    deadlineLabel: "17 Jun 2026",
-    urgent: true,
-    desc: "Global Alliance for Chronic Diseases (GACD) call on Multisectoral Approaches for Non-Communicable Diseases. International collaborative research call facilitated via ICMR.",
-    url: "https://www.gacd.org/funding/current-call-for-applications"
-  },
-  {
     title: "ANRF-Ramanujan Fellowship 2026",
-    org: "DST", cat: "Science & Engineering",
+    org: "ANRF", cat: "Science & Engineering",
     deadlineLabel: "Open year-round — no fixed deadline",
     urgent: false,
     desc: "For Indian scientists/engineers working abroad to return to India. Rs.1.35L/month + Rs.7L/yr research grant for 5 years. Nominations accepted anytime via ANRF portal.",
     url: "https://anrfonline.in/ANRF/Ramanujan_fellowship?HomePage=New"
+  },
+  {
+    title: "ICSSR-NSTC (Taiwan) Joint Call for Research Proposals 2026",
+    org: "ICSSR", cat: "International Collaboration",
+    deadlineLabel: "3 Aug 2026 (applications open from 1 Jun 2026)",
+    urgent: false,
+    desc: "Bilateral joint research projects between Indian and Taiwanese researchers in Social Sciences and Humanities. Funding up to ₹12 Lakh per project; 5 projects to be supported under this call. Must be jointly submitted with a Taiwanese co-PI via NSTC.",
+    url: "https://icssr.org/announcements/icssr-nstc-taiwan-joint-call-research-proposals-2026"
   }
 ];
 
