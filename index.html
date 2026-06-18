@@ -1,184 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>India Research Grant Tracker 2026</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; padding: 16px; color: #1a1a1a; }
-    .header { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 14px; }
-    .header h1 { font-size: 20px; font-weight: 600; }
-    .header .updated { font-size: 12px; color: #888; margin-top: 4px; }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-    .stat { background: #f0f0f0; border-radius: 8px; padding: 14px; text-align: center; }
-    .stat-num { font-size: 22px; font-weight: 600; color: #1a3a52; }
-    .stat-lbl { font-size: 12px; color: #666; margin-top: 2px; }
-    .controls { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 14px; margin-bottom: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .controls input, .controls select { flex: 1; min-width: 140px; font-size: 13px; padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; background: #fafafa; color: #1a1a1a; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-    .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.2s, box-shadow 0.2s; }
-    .card:hover { border-color: #1a3a52; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    .card-top { padding: 14px 14px 10px; border-bottom: 1px solid #f0f0f0; }
-    .badge-row { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-    .badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 99px; }
-    .badge-org { background: #e8f0fe; color: #1a3a52; }
-    .badge-cat { background: #f0f0f0; color: #555; }
-    .card-title { font-size: 14px; font-weight: 600; color: #1a1a1a; line-height: 1.4; }
-    .card-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-    .deadline { font-size: 12px; color: #888; }
-    .deadline span { font-weight: 600; color: #1a3a52; }
-    .deadline span.urgent { color: #c0392b; }
-    .desc { font-size: 13px; color: #555; line-height: 1.5; flex: 1; }
-    .link-btn { display: block; text-align: center; padding: 9px; font-size: 13px; font-weight: 600; color: #1a3a52; border: 1px solid #1a3a52; border-radius: 8px; text-decoration: none; margin-top: 4px; transition: background 0.15s; }
-    .link-btn:hover { background: #e8f0fe; }
-    .empty { grid-column: 1/-1; text-align: center; padding: 32px; color: #888; font-size: 14px; }
-    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India Research Grant Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#11161b; --bg-alt:#161c22; --surface:#1b2229; --surface-2:#212a32;
+  --paper:#ece3cc; --brass:#c9a04d; --brass-dim:#8e7233;
+  --rust:#c25a32; --sage:#7ea077; --sage-dim:#536b4f; --amber:#bd7f3a;
+  --text:#e8e3d6; --text-dim:#9c9686; --line:#2a3138; --line-soft:#232a30;
+  --serif:'Source Serif 4',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);padding:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+
+/* ── Header ── */
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--brass);text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 3px rgba(126,160,119,.15)}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);letter-spacing:-.01em;margin-bottom:6px}
+.sub{font-size:13px;color:var(--text-dim);font-family:var(--mono)}
+.header-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:20px}
+.print-btn{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--text-dim);background:transparent;border:1px solid var(--line);border-radius:5px;padding:7px 13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.print-btn:hover{border-color:var(--brass);color:var(--brass)}
+
+/* ── Ticker ── */
+.ticker-wrap{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:20px;overflow:hidden;display:flex;align-items:center}
+.ticker-label{flex-shrink:0;background:var(--rust);color:#1b0d06;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;padding:10px 12px;align-self:stretch;display:flex;align-items:center;text-transform:uppercase}
+.ticker-track-outer{flex:1;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+.ticker-track{display:flex;gap:28px;white-space:nowrap;padding:11px 24px;animation:ticker 26s linear infinite}
+.ticker-wrap:hover .ticker-track{animation-play-state:paused}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{font-family:var(--mono);font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:7px}
+.ticker-item b{color:var(--text);font-weight:500}
+.ticker-item .dleft{color:var(--rust);font-weight:600}
+.ticker-empty{font-family:var(--mono);font-size:12px;color:var(--text-dim);padding:11px 24px}
+@media (prefers-reduced-motion: reduce){.ticker-track{animation:none;overflow-x:auto}}
+
+/* ── Stats ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:20px}
+.stat{background:var(--surface);padding:14px 16px}
+.stat-num{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--paper)}
+.stat-lbl{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+/* ── Controls ── */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.controls input,.controls select{font-family:var(--sans);font-size:13px;padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:6px;color:var(--text);outline:none;transition:border-color .15s}
+.controls input{flex:2;min-width:160px}
+.controls select{flex:1;min-width:130px}
+.controls input:focus,.controls select:focus{border-color:var(--brass)}
+.controls input::placeholder{color:var(--text-dim)}
+
+/* ── Grid & Cards ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:0;display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--brass-dim);transform:translateY(-2px)}
+.card-head{padding:16px 16px 12px;border-bottom:1px solid var(--line-soft);position:relative}
+.card-ref{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:.04em;margin-bottom:8px}
+.tag-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;letter-spacing:.03em;text-transform:uppercase}
+.tag-org{background:rgba(201,160,77,.14);color:var(--brass)}
+.tag-cat{background:rgba(255,255,255,.05);color:var(--text-dim)}
+.card-title{font-family:var(--serif);font-size:15.5px;font-weight:600;line-height:1.35;color:var(--text)}
+.stamp{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1.5px double;border-radius:3px;transform:rotate(4deg);background:rgba(0,0,0,.15)}
+.stamp-critical{color:var(--rust);border-color:var(--rust)}
+.stamp-warn{color:var(--amber);border-color:var(--amber)}
+.stamp-ok{color:var(--sage);border-color:var(--sage)}
+.stamp-rolling{color:var(--text-dim);border-color:var(--line)}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:11px;flex:1}
+.desc{font-size:12.5px;color:var(--text-dim);line-height:1.6;flex:1}
+.meta-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11.5px}
+.tier{display:flex;align-items:center;gap:4px;font-family:var(--mono);color:var(--text-dim)}
+.tier-dot{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.tier-dot.fill{background:var(--brass)}
+.deadline-line{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+.deadline-line b.critical{color:var(--rust)}
+.deadline-line b.warn{color:var(--amber)}
+.deadline-line b.ok{color:var(--sage)}
+.deadline-line b.rolling{color:var(--text-dim)}
+.bar-track{height:3px;background:var(--line-soft);border-radius:2px;overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;border-radius:2px}
+.btn-row{display:flex;gap:8px;margin-top:2px}
+.btn{flex:1;text-align:center;font-family:var(--mono);font-size:11.5px;padding:9px;border-radius:6px;text-decoration:none;letter-spacing:.02em;transition:all .15s;cursor:pointer;border:1px solid var(--line)}
+.btn-primary{background:var(--brass);color:#1b160a;border-color:var(--brass);font-weight:600}
+.btn-primary:hover{background:#d9af5d}
+.btn-ghost{background:transparent;color:var(--text-dim)}
+.btn-ghost:hover{border-color:var(--brass-dim);color:var(--brass)}
+.doc-icon{font-size:10px;margin-right:3px}
+
+.empty{grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);font-family:var(--mono);font-size:13px}
+.footer-note{margin-top:24px;font-family:var(--mono);font-size:10.5px;color:var(--text-dim);border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* toast for copy feedback */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--brass);color:#1b160a;font-family:var(--mono);font-size:12px;font-weight:600;padding:9px 18px;border-radius:6px;opacity:0;transition:all .25s;pointer-events:none;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media print{
+  .ticker-wrap,.controls,.print-btn,.btn-row,.toast{display:none!important}
+  body{background:#fff;color:#111}
+  .card,.stats,.stat{background:#fff;border-color:#ccc}
+  .stat-num,.card-title{color:#111}
+}
+</style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🎓 India Research Grant Tracker 2026</h1>
+<div class="wrap">
+
+  <div class="header-row">
+    <div>
+      <div class="eyebrow">Grant Tracker · Live Status</div>
+      <h1>India Research Grant Tracker</h1>
+      <div class="sub" id="subline">—</div>
+    </div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker-label">Closing Soon</div>
+    <div class="ticker-track-outer">
+      <div class="ticker-track" id="ticker"></div>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="Search grants, funders, sectors…">
+    <select id="orgFilter"><option value="">All organizations</option></select>
+    <select id="catFilter"><option value="">All categories</option></select>
+    <select id="sortBy">
+      <option value="deadline">Sort: Deadline (soonest)</option>
+      <option value="tier">Sort: Funding scale</option>
+      <option value="org">Sort: Organization</option>
+    </select>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+
+
 </div>
 
-<div class="stats">
-  <div class="stat"><div class="stat-num" id="visCount">9</div><div class="stat-lbl">Active Grants</div></div>
-  <div class="stat"><div class="stat-num" id="orgCount">4</div><div class="stat-lbl">Organizations</div></div>
-  <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Categories</div></div>
-</div>
-
-<div class="controls">
-  <input type="text" id="search" placeholder="🔍 Search grants...">
-  <select id="orgFilter">
-    <option value="">All Organizations</option>
-    <option>DBT</option>
-    <option>ICMR</option>
-    <option>ANRF</option>
-    <option>ICSSR</option>
-  </select>
-  <select id="catFilter">
-    <option value="">All Categories</option>
-    <option>Biomedical &amp; Health</option>
-    <option>Science &amp; Engineering</option>
-    <option>Innovation &amp; Entrepreneurship</option>
-    <option>International Collaboration</option>
-  </select>
-</div>
-
-<div class="grid" id="grid"></div>
+<div class="toast" id="toast">Link copied</div>
 
 <script>
-const grants = [
+// ─────────────────────────────────────────────────────────────
+// DATA — update this array each cycle. Nothing below this needs
+// to change unless you want to adjust layout/behaviour.
+// tier: 1 = individual/fellowship, 2 = project grant, 3 = large/institutional
+// deadlineDate: "YYYY-MM-DD" or null if rolling/no fixed date
+// docType: 'pdf' or 'page' (auto-detected from URL if omitted)
+// ─────────────────────────────────────────────────────────────
+const GRANTS = [
   {
+    ref: "DBT/BIRAC/BioE3-01",
     title: "DBT-BIRAC Bio-AI Hubs Rolling Call (BioE3 Policy)",
-    org: "DBT", cat: "Biomedical & Health",
-    deadlineLabel: "30 Jun 2026 (midnight)",
-    urgent: true,
-    desc: "Rolling call to establish Bio-AI Hubs under BioE3 policy for biomanufacturing. Focus: Biomolecular Design, Sustainable Agriculture, Synthetic Biology, Ayurveda & Genomics Diagnostics. Open to academia, industry, startups & LLPs. Proposals evaluated periodically on a rolling basis. Note: BIRAC site was under maintenance 15–18 June 2026.",
+    org: "DBT", cat: "Biomedical & Health", tier: 3,
+    deadlineDate: "2026-06-30", deadlineLabel: "30 Jun 2026 (midnight)",
+    desc: "Rolling call to establish Bio-AI Hubs under BioE3 policy for biomanufacturing — Biomolecular Design, Sustainable Agriculture, Synthetic Biology, Ayurveda & Genomics Diagnostics. Open to academia, industry, startups and LLPs.",
     url: "https://birac.nic.in/cfp_view.php?id=114&scheme_type=46"
   },
   {
+    ref: "ICMR/HRD/26-27",
     title: "ICMR HRD Scheme 2026-27 — Long & Short Term Fellowships Abroad",
-    org: "ICMR", cat: "Biomedical & Health",
-    deadlineLabel: "30 Jun 2026",
-    urgent: true,
-    desc: "Call for Proposals for Long Term & Short Term Fellowships Abroad under HRD Schemes for the Financial Year 2026–27. For health research personnel, age below 57 years. Direct link to the official call PDF.",
+    org: "ICMR", cat: "Biomedical & Health", tier: 1,
+    deadlineDate: "2026-06-30", deadlineLabel: "30 Jun 2026",
+    desc: "Fellowships abroad under HRD Schemes for FY 2026–27, for health research personnel below 57 years of age. Direct link to the official call document.",
     url: "https://www.icmr.gov.in/icmrobject/uploads/Documents/1777270497_1776842672_call_shortterm_longterm.pdf"
   },
   {
+    ref: "ICMR/TB-RAP/EOI",
     title: "ICMR TB Research Accelerator Program — EOI",
-    org: "ICMR", cat: "Biomedical & Health",
-    deadlineLabel: "2 Jul 2026",
-    urgent: true,
-    desc: "EOI for Development and Validation of Diagnostics, Treatment Regimens, Preventive Strategies and Implementation Research for Management of Tuberculosis. Direct link to the official EOI document.",
+    org: "ICMR", cat: "Biomedical & Health", tier: 2,
+    deadlineDate: "2026-07-02", deadlineLabel: "2 Jul 2026",
+    desc: "EOI for diagnostics, treatment regimens, preventive strategies and implementation research on Tuberculosis management. Direct link to the official EOI document.",
     url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1780383566_eoiforconceptproposalsonpriorityresearchtopicsintb.pdf"
   },
   {
+    ref: "ICMR/GC-ANM/RFP",
     title: "ICMR — Nutrient-Dense Food Products for Anaemia Prevention",
-    org: "ICMR", cat: "Biomedical & Health",
-    deadlineLabel: "3 Jul 2026",
-    urgent: false,
-    desc: "Request for Proposals (ICMR–Gates Foundation Grand Challenge) for Development of Aspirational Nutrient-Dense Food Products for Adolescent Girls and Women of Reproductive Age (WRA) to Prevent Anaemia. Direct link to the official RFP document.",
+    org: "ICMR", cat: "Biomedical & Health", tier: 2,
+    deadlineDate: "2026-07-03", deadlineLabel: "3 Jul 2026",
+    desc: "RFP (ICMR–Gates Grand Challenge) for nutrient-dense food products for adolescent girls and women of reproductive age, to prevent anaemia. Direct link to the official RFP document.",
     url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1780480057_grandchallengecall-june2.pdf"
   },
   {
-    title: "ICMR Cancer Prevention EOI (Jammu & Kashmir)",
-    org: "ICMR", cat: "Biomedical & Health",
-    deadlineLabel: "25 Jun 2026, 17:00 hrs",
-    urgent: true,
-    desc: "Expression of Interest for Prevention and Screening of Oral, Breast, Cervical and Gastrointestinal Cancers in Jammu and Kashmir. Direct link to the official EOI document.",
+    ref: "ICMR/JK-CAN2/EOI",
+    title: "ICMR Cancer Prevention EOI — Jammu & Kashmir",
+    org: "ICMR", cat: "Biomedical & Health", tier: 2,
+    deadlineDate: "2026-06-25", deadlineLabel: "25 Jun 2026, 17:00 hrs",
+    desc: "EOI for prevention and screening of oral, breast, cervical and gastrointestinal cancers in Jammu & Kashmir. Direct link to the official EOI document.",
     url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1779701900_eoi_2jk25052026.pdf"
   },
   {
-    title: "ICMR Breast Cancer Study — Improve Survival in J&K (EOI)",
-    org: "ICMR", cat: "Biomedical & Health",
-    deadlineLabel: "⚠ 19 Jun 2026, 17:00 hrs — closes tomorrow",
-    urgent: true,
-    desc: "Expression of Interest for Participation in 'Breast Cancer study to Improve Survival in the UT of Jammu & Kashmir.' Extremely tight deadline — verify directly via the official document before relying on this date.",
+    ref: "ICMR/JK-BRC1/EOI",
+    title: "ICMR Breast Cancer Study — Improve Survival in J&K",
+    org: "ICMR", cat: "Biomedical & Health", tier: 2,
+    deadlineDate: "2026-06-19", deadlineLabel: "19 Jun 2026, 17:00 hrs",
+    desc: "EOI for participation in the breast cancer survival improvement study in J&K. Very tight window — confirm directly against the official document before relying on this date.",
     url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1779275756_eoi_1jk_20052026.pdf"
   },
   {
-    title: "ICMR Special Call — Centres for Advanced Research (CAR) on Medical Devices",
-    org: "ICMR", cat: "Biomedical & Health",
-    deadlineLabel: "15 Jul 2026, 17:00 hrs",
-    urgent: false,
-    desc: "Special Call for Proposals for establishment of ICMR Centres for Advanced Research (CAR) for Development of Priority Medical Devices and Diagnostic Technologies. Exact PDF for this 2026 call could not be independently verified — link goes to ICMR's official Call for Proposals listing page where it is posted; please confirm the document there before applying.",
-    url: "https://www.icmr.gov.in/call-for-proposals"
+    ref: "ICMR/CAR-MD/SPL",
+    title: "ICMR Special Call — Centres for Advanced Research on Medical Devices",
+    org: "ICMR", cat: "Biomedical & Health", tier: 3,
+    deadlineDate: "2026-07-15", deadlineLabel: "15 Jul 2026, 17:00 hrs",
+    desc: "Special call to establish ICMR Centres for Advanced Research (CAR) for priority medical devices and diagnostic technologies. Exact 2026 PDF could not be independently confirmed — link goes to ICMR's official listing page where it is posted.",
+    url: "https://www.icmr.gov.in/call-for-proposals",
+    docType: "page"
   },
   {
+    ref: "ANRF/RF/2026",
     title: "ANRF-Ramanujan Fellowship 2026",
-    org: "ANRF", cat: "Science & Engineering",
-    deadlineLabel: "Open year-round — no fixed deadline",
-    urgent: false,
-    desc: "For Indian scientists/engineers working abroad to return to India. Rs.1.35L/month + Rs.7L/yr research grant for 5 years. Nominations accepted anytime via ANRF portal.",
+    org: "ANRF", cat: "Science & Engineering", tier: 1,
+    deadlineDate: null, deadlineLabel: "Open year-round — no fixed deadline",
+    desc: "For Indian scientists and engineers working abroad to return to India. ₹1.35L/month plus ₹7L/yr research grant for 5 years. Nominations accepted anytime.",
     url: "https://anrfonline.in/ANRF/Ramanujan_fellowship?HomePage=New"
   },
   {
+    ref: "ICSSR/NSTC-TW/26",
     title: "ICSSR-NSTC (Taiwan) Joint Call for Research Proposals 2026",
-    org: "ICSSR", cat: "International Collaboration",
-    deadlineLabel: "3 Aug 2026 (applications open from 1 Jun 2026)",
-    urgent: false,
-    desc: "Bilateral joint research projects between Indian and Taiwanese researchers in Social Sciences and Humanities. Funding up to ₹12 Lakh per project; 5 projects to be supported under this call. Must be jointly submitted with a Taiwanese co-PI via NSTC.",
+    org: "ICSSR", cat: "International Collaboration", tier: 2,
+    deadlineDate: "2026-08-03", deadlineLabel: "3 Aug 2026 (applications open from 1 Jun 2026)",
+    desc: "Bilateral India–Taiwan joint research in Social Sciences & Humanities. Funding up to ₹12L per project; 5 projects to be supported. Requires a joint submission with a Taiwanese co-PI via NSTC.",
     url: "https://icssr.org/announcements/icssr-nstc-taiwan-joint-call-research-proposals-2026"
   }
 ];
+// ─────────────────────────────────────────────────────────────
 
-function render() {
-  const s = document.getElementById('search').value.toLowerCase();
-  const o = document.getElementById('orgFilter').value;
-  const c = document.getElementById('catFilter').value;
-  const filtered = grants.filter(g =>
-    (!s || g.title.toLowerCase().includes(s) || g.desc.toLowerCase().includes(s) || g.cat.toLowerCase().includes(s)) &&
-    (!o || g.org === o) &&
-    (!c || g.cat === c)
+let sortKey = 'deadline', activeOrg = '', activeCat = '';
+
+function daysLeft(g){
+  if (!g.deadlineDate) return null;
+  return Math.ceil((new Date(g.deadlineDate + 'T23:59:59') - new Date()) / 86400000);
+}
+function urgency(g){
+  const d = daysLeft(g);
+  if (d === null) return 'rolling';
+  if (d < 0) return 'closed';
+  if (d <= 7) return 'critical';
+  if (d <= 21) return 'warn';
+  return 'ok';
+}
+function docType(g){
+  if (g.docType) return g.docType;
+  return g.url.toLowerCase().endsWith('.pdf') ? 'pdf' : 'page';
+}
+function deadlineBar(g){
+  const d = daysLeft(g);
+  if (d === null) return `<div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--line)"></div></div>`;
+  const windowDays = 30;
+  const pct = d <= 0 ? 100 : Math.max(6, Math.min(100, Math.round((1 - d/windowDays) * 100)));
+  const color = d<=7 ? 'var(--rust)' : d<=21 ? 'var(--amber)' : 'var(--sage)';
+  return `<div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>`;
+}
+function tierDots(t){
+  let h = '';
+  for(let i=1;i<=3;i++) h += `<span class="tier-dot${i<=t?' fill':''}"></span>`;
+  return h;
+}
+function tierLabel(t){ return t===1 ? 'Fellowship' : t===2 ? 'Project grant' : 'Large / institutional'; }
+
+function populateFilters(){
+  const orgs = [...new Set(GRANTS.map(g=>g.org))].sort();
+  const cats = [...new Set(GRANTS.map(g=>g.cat))].sort();
+  document.getElementById('orgFilter').innerHTML = '<option value="">All organizations</option>' +
+    orgs.map(o=>`<option value="${o}">${o}</option>`).join('');
+  document.getElementById('catFilter').innerHTML = '<option value="">All categories</option>' +
+    cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+function renderTicker(){
+  const soon = GRANTS
+    .map(g=>({g, d: daysLeft(g)}))
+    .filter(x => x.d !== null && x.d >= 0 && x.d <= 14)
+    .sort((a,b)=>a.d-b.d);
+  const track = document.getElementById('ticker');
+  if (!soon.length){
+    track.innerHTML = '';
+    track.parentElement.parentElement.querySelector('.ticker-label').textContent = 'All clear';
+    track.outerHTML = '<div class="ticker-empty" id="ticker">No grants closing within 14 days right now.</div>';
+    return;
+  }
+  const items = soon.map(x=>`<span class="ticker-item"><b>${x.g.title}</b> · <span class="dleft">${x.d===0?'closes today':x.d+'d left'}</span></span>`).join('');
+  track.innerHTML = items + items; // duplicate for seamless loop
+}
+
+function renderStats(filtered){
+  const orgs = new Set(filtered.map(g=>g.org));
+  const closingSoon = filtered.filter(g=>{const d=daysLeft(g); return d!==null && d>=0 && d<=7;}).length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="stat-num">${filtered.length}</div><div class="stat-lbl">Active calls</div></div>
+    <div class="stat"><div class="stat-num">${orgs.size}</div><div class="stat-lbl">Organizations</div></div>
+    <div class="stat"><div class="stat-num">${closingSoon}</div><div class="stat-lbl">Closing ≤7 days</div></div>
+    <div class="stat"><div class="stat-num">${new Set(filtered.map(g=>g.cat)).size}</div><div class="stat-lbl">Categories</div></div>
+  `;
+}
+
+function copyLink(url, refEl){
+  navigator.clipboard.writeText(url).then(()=>{
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 1400);
+  });
+}
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase();
+  let filtered = GRANTS.filter(g =>
+    (!q || g.title.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q) || g.org.toLowerCase().includes(q)) &&
+    (!activeOrg || g.org === activeOrg) &&
+    (!activeCat || g.cat === activeCat)
   );
-  document.getElementById('visCount').textContent = filtered.length;
-  const orgs = new Set(filtered.map(g => g.org));
-  document.getElementById('orgCount').textContent = orgs.size;
+
+  if (sortKey === 'deadline'){
+    filtered.sort((a,b)=>{
+      const da = daysLeft(a), db = daysLeft(b);
+      if (da===null && db===null) return 0;
+      if (da===null) return 1;
+      if (db===null) return -1;
+      return da-db;
+    });
+  } else if (sortKey === 'tier'){
+    filtered.sort((a,b)=>b.tier-a.tier);
+  } else if (sortKey === 'org'){
+    filtered.sort((a,b)=>a.org.localeCompare(b.org));
+  }
+
+  renderStats(filtered);
+
   const grid = document.getElementById('grid');
-  if (!filtered.length) { grid.innerHTML = '<div class="empty">No grants match your filters.</div>'; return; }
-  grid.innerHTML = filtered.map(g => `
+  if (!filtered.length){
+    grid.innerHTML = '<div class="empty">No grants match these filters. Try clearing search or filters.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(g=>{
+    const u = urgency(g);
+    const d = daysLeft(g);
+    const stampClass = u==='critical'?'stamp-critical':u==='warn'?'stamp-warn':u==='rolling'?'stamp-rolling':'stamp-ok';
+    const stampText = u==='critical'?'Closing soon':u==='warn'?'Open':u==='rolling'?'Rolling':u==='closed'?'Check status':'Open';
+    const dlClass = u==='critical'?'critical':u==='warn'?'warn':u==='rolling'?'rolling':'ok';
+    const dlText = d===null ? g.deadlineLabel : (d<0 ? 'Deadline passed — verify' : d===0 ? 'Closes today' : `${d} days left`);
+    const dt = docType(g);
+    const docLabel = dt==='pdf' ? '<span class="doc-icon">📄</span>PDF' : '<span class="doc-icon">🔗</span>Page';
+    return `
     <div class="card">
-      <div class="card-top">
-        <div class="badge-row">
-          <span class="badge badge-org">${g.org}</span>
-          <span class="badge badge-cat">${g.cat}</span>
+      <div class="card-head">
+        <span class="stamp ${stampClass}">${stampText}</span>
+        <div class="card-ref">REF ${g.ref}</div>
+        <div class="tag-row">
+          <span class="tag tag-org">${g.org}</span>
+          <span class="tag tag-cat">${g.cat}</span>
         </div>
         <div class="card-title">${g.title}</div>
       </div>
       <div class="card-body">
-        <div class="deadline">📅 Deadline: <span class="${g.urgent ? 'urgent' : ''}">${g.deadlineLabel}</span></div>
         <div class="desc">${g.desc}</div>
-        <a class="link-btn" href="${g.url}" target="_blank" rel="noopener">🌐 Official Application Page →</a>
+        <div class="meta-row">
+          <span class="tier" title="${tierLabel(g.tier)}">${tierDots(g.tier)} ${tierLabel(g.tier)}</span>
+        </div>
+        <div>
+          <div class="deadline-line">Deadline: <b class="${dlClass}">${dlText}</b> <span style="opacity:.6">· ${g.deadlineLabel}</span></div>
+          ${deadlineBar(g)}
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="${g.url}" target="_blank" rel="noopener">${docLabel} · Open</a>
+          <button class="btn btn-ghost" onclick="copyLink('${g.url}')">Copy link</button>
+        </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 document.getElementById('search').addEventListener('input', render);
-document.getElementById('orgFilter').addEventListener('change', render);
-document.getElementById('catFilter').addEventListener('change', render);
+document.getElementById('orgFilter').addEventListener('change', e=>{activeOrg=e.target.value; render();});
+document.getElementById('catFilter').addEventListener('change', e=>{activeCat=e.target.value; render();});
+document.getElementById('sortBy').addEventListener('change', e=>{sortKey=e.target.value; render();});
+
+
+populateFilters();
+renderTicker();
 render();
 </script>
 </body>
