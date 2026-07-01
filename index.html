@@ -273,7 +273,9 @@ let sortKey = 'deadline', activeOrg = '', activeCat = '';
 
 function daysLeft(g){
   if (!g.deadlineDate) return null;
-  return Math.ceil((new Date(g.deadlineDate + 'T23:59:59') - new Date()) / 86400000);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dl = new Date(g.deadlineDate + 'T00:00:00');
+  return Math.round((dl - today) / 86400000);
 }
 function urgency(g){
   const d = daysLeft(g);
