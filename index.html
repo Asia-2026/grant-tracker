@@ -92,7 +92,6 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);lette
       <h1>India Research Grant Tracker</h1>
       <div class="sub" id="subline">—</div>
     </div>
-    <button class="print-btn" onclick="window.print()">⎙ Print briefing</button>
   </div>
   <div class="ticker-wrap">
     <div class="ticker-label">Closing Soon</div>
@@ -387,8 +386,6 @@ document.getElementById('catFilter').addEventListener('change',e=>{activeCat=e.t
 document.getElementById('sortBy').addEventListener('change',e=>{sortKey=e.target.value;render();});
 
 const today=new Date();
-document.getElementById('subline').textContent='Verified open calls · status as of '+today.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-document.getElementById('footLeft').textContent='Last refreshed '+today.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})+' · '+GRANTS.length+' calls tracked';
 populateFilters();
 renderTicker();
 render();
