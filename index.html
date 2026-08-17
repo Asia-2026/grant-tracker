@@ -15,12 +15,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);padding:0;-w
 h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);letter-spacing:-.01em;margin-bottom:6px}
 .sub{font-size:13px;color:var(--text-dim);font-family:var(--mono)}
 .header-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:20px}
-.print-btn{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--text-dim);background:transparent;border:1px solid var(--line);border-radius:5px;padding:7px 13px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.print-btn:hover{border-color:var(--brass);color:var(--brass)}
+@media print{.ticker-wrap,.controls,.btn-row,.toast{display:none!important}body{background:#fff;color:#111}.card,.stats,.stat{background:#fff;border-color:#ccc}.stat-num,.card-title{color:#111}}
 .ticker-wrap{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:20px;overflow:hidden;display:flex;align-items:center}
 .ticker-label{flex-shrink:0;background:var(--rust);color:#1b0d06;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;padding:10px 12px;align-self:stretch;display:flex;align-items:center;text-transform:uppercase}
 .ticker-track-outer{flex:1;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
-.ticker-track{display:flex;gap:28px;white-space:nowrap;padding:11px 24px;animation:ticker 32s linear infinite}
+.ticker-track{display:flex;gap:28px;white-space:nowrap;padding:11px 24px;animation:ticker 36s linear infinite}
 .ticker-wrap:hover .ticker-track{animation-play-state:paused}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .ticker-item{font-family:var(--mono);font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:7px}
@@ -48,6 +47,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);lette
 .tag-org{background:rgba(201,160,77,.14);color:var(--brass)}
 .tag-cat{background:rgba(255,255,255,.05);color:var(--text-dim)}
 .card-title{font-family:var(--serif);font-size:15.5px;font-weight:600;line-height:1.35;color:var(--text)}
+.new-badge{font-family:var(--mono);font-size:9px;padding:2px 6px;background:rgba(126,160,119,.18);color:var(--sage);border-radius:3px;margin-left:6px;vertical-align:middle;letter-spacing:.04em}
 .stamp{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1.5px double;border-radius:3px;transform:rotate(4deg);background:rgba(0,0,0,.15)}
 .stamp-critical{color:var(--rust);border-color:var(--rust)}
 .stamp-warn{color:var(--amber);border-color:var(--amber)}
@@ -56,8 +56,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);lette
 .stamp-closed{color:var(--text-dim);border-color:var(--text-dim)}
 .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:11px;flex:1}
 .desc{font-size:12.5px;color:var(--text-dim);line-height:1.6;flex:1}
-.meta-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11.5px}
-.tier{display:flex;align-items:center;gap:4px;font-family:var(--mono);color:var(--text-dim)}
+.tier{display:flex;align-items:center;gap:4px;font-family:var(--mono);color:var(--text-dim);font-size:11.5px}
 .tier-dot{width:6px;height:6px;border-radius:50%;background:var(--line)}
 .tier-dot.fill{background:var(--brass)}
 .deadline-line{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
@@ -75,13 +74,11 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);lette
 .btn-ghost{background:transparent;color:var(--text-dim)}
 .btn-ghost:hover{border-color:var(--brass-dim);color:var(--brass)}
 .doc-icon{font-size:10px;margin-right:3px}
-.new-badge{font-family:var(--mono);font-size:9px;padding:2px 6px;background:rgba(126,160,119,.18);color:var(--sage);border-radius:3px;margin-left:6px;vertical-align:middle;letter-spacing:.04em}
 .empty{grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);font-family:var(--mono);font-size:13px}
 .footer-note{margin-top:24px;font-family:var(--mono);font-size:10.5px;color:var(--text-dim);border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--brass);color:#1b160a;font-family:var(--mono);font-size:12px;font-weight:600;padding:9px 18px;border-radius:6px;opacity:0;transition:all .25s;pointer-events:none;z-index:99}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
-@media print{.ticker-wrap,.controls,.print-btn,.btn-row,.toast{display:none!important}body{background:#fff;color:#111}.card,.stats,.stat{background:#fff;border-color:#ccc}.stat-num,.card-title{color:#111}}
 </style>
 </head>
 <body>
@@ -116,47 +113,40 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);lette
 
 <script>
 // ─────────────────────────────────────────────────────────────
-// DATA — sirf yahan update karo. isNew: true = green NEW badge
+// DATA — sirf yahan update karo. Updated: 20 Jul 2026
 // tier: 1=Fellowship  2=Project grant  3=Large/institutional
 // deadlineDate: "YYYY-MM-DD" or null if rolling
 // docType: 'pdf' or 'page' (auto from URL if omitted)
+// isNew: true = green NEW badge
 // ─────────────────────────────────────────────────────────────
 const GRANTS = [
-  // ── ACTIVE GRANTS — updated 3 Jul 2026 ──────────────────────
+
+  // ── ICMR ────────────────────────────────────────────────────
   {
-    ref: "ICMR/TB-RAP/EOI",
-    title: "ICMR TB Research Accelerator Program — EOI",
+    ref: "ICMR/NMC-MEQR/2026",
+    title: "ICMR-NMC Joint Call — Research for Quality of Medical Education",
     org: "ICMR", cat: "Biomedical & Health", tier: 2,
-    deadlineDate: "2026-07-02", deadlineLabel: "2 Jul 2026",
-    desc: "EOI for diagnostics, treatment regimens, preventive strategies and implementation research on Tuberculosis management.",
-    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1780383566_eoiforconceptproposalsonpriorityresearchtopicsintb.pdf"
-  },
-  {
-    // Deadline extended from 3 Jul → 15 Jul per ICMR homepage notice
-    ref: "ICMR/GC-ANM/RFP",
-    title: "ICMR — Nutrient-Dense Food Products for Anaemia Prevention",
-    org: "ICMR", cat: "Biomedical & Health", tier: 2,
-    deadlineDate: "2026-07-15", deadlineLabel: "15 Jul 2026 (extended)",
-    desc: "RFP (ICMR-Gates Grand Challenge) for nutrient-dense food products for adolescent girls and women of reproductive age to prevent anaemia. Deadline extended from 3 Jul.",
-    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1780480057_grandchallengecall-june2.pdf"
-  },
-  {
-    // Deadline extended from 30 Jun → 15 Jul per ICMR homepage notice
-    ref: "ICMR/HRD/26-27",
-    title: "ICMR HRD Scheme 2026-27 — Long & Short Term Fellowships Abroad",
-    org: "ICMR", cat: "Biomedical & Health", tier: 1,
-    deadlineDate: "2026-07-15", deadlineLabel: "15 Jul 2026 (extended from 30 Jun)",
-    desc: "Call for Proposals for Long Term & Short Term Fellowships Abroad under HRD Schemes for FY 2026-27. For health research personnel below 57 years. Deadline extended.",
-    url: "https://www.icmr.gov.in/post/call-for-proposals-for-long-term-short-term-abroad-under-hrd-schemes-for-the-financial-year-2026-27-last-date-june-30-2026",
+    deadlineDate: "2026-08-21", deadlineLabel: "21 Aug 2026, 17:00 hrs",
+    desc: "Joint initiative of ICMR and National Medical Commission (NMC) for research proposals focused on strengthening and enhancing quality of medical education in India.",
+    url: "https://www.icmr.gov.in/call-for-proposals",
     docType: "page"
   },
   {
-    ref: "ICMR/DM-COHORT/EOI",
-    title: "ICMR Indo-US Collaborative Research — Heterogeneity of Diabetes (EOI)",
-    org: "ICMR", cat: "International Collaboration", tier: 2,
-    deadlineDate: "2026-07-15", deadlineLabel: "15 Jul 2026",
-    desc: "EOI for contributing data from existing Indian cohorts to Indo-US collaborative research on heterogeneity of diabetes to enable precision diabetes medicine. ICMR-NIDDK partnership.",
-    url: "https://www.icmr.gov.in/post/expression-of-interest-eoi-for-contributing-data-from-existing-indian-cohorts-to-indo-us-collaborative-research-focused-on-heterogeneity-of-diabetes-to-enable-precision-diabetes",
+    ref: "ICMR/IVD-CDSCO/2026",
+    title: "ICMR-CDSCO — Comments on Draft Standard IVD Evaluation Protocols",
+    org: "ICMR", cat: "Biomedical & Health", tier: 2,
+    deadlineDate: "2026-08-25", deadlineLabel: "25 Aug 2026",
+    desc: "ICMR and CDSCO invite stakeholder comments on 39 draft standard evaluation protocols for In-Vitro Diagnostics (IVDs) — covering ELISA, RDT, PCR, multiplex kits for Dengue, TB, Malaria, Typhoid and respiratory viruses. Open to manufacturers, labs, clinicians and researchers.",
+    url: "https://www.icmr.gov.in/call-for-proposals",
+    docType: "page"
+  },
+  {
+    ref: "ICMR/TB-SLUM/EOI",
+    title: "ICMR Delhi TB Free Slum Demonstration Project — EOI",
+    org: "ICMR", cat: "Biomedical & Health", tier: 2,
+    deadlineDate: "2026-08-29", deadlineLabel: "29 Aug 2026",
+    desc: "EOI for a new urban TB elimination demonstration project targeting Delhi slums under the ICMR TB Research Accelerator Program. Focuses on implementation and operational research for TB-free urban communities.",
+    url: "https://www.icmr.gov.in/call-for-proposals",
     docType: "page"
   },
   {
@@ -164,64 +154,23 @@ const GRANTS = [
     title: "ICMR Special Call — Centres for Advanced Research on Medical Devices",
     org: "ICMR", cat: "Biomedical & Health", tier: 3,
     deadlineDate: "2026-08-31", deadlineLabel: "31 Aug 2026, 17:00 hrs (extended)",
-    desc: "Special call to establish ICMR Centres for Advanced Research (CAR) for priority medical devices and diagnostic technologies. Deadline extended from 15 Jul to 31 Aug.",
+    desc: "Special call to establish ICMR Centres for Advanced Research (CAR) for priority medical devices and diagnostic technologies. Deadline extended from 15 Jul.",
     url: "https://www.icmr.gov.in/call-for-proposals",
     docType: "page"
   },
-  {
-    ref: "ANRF/MAHA-WP/2026",
-    title: "ANRF MAHA Water Program — Open Call for Proposals",
-    org: "ANRF", cat: "Science & Engineering", tier: 3,
-    deadlineDate: "2026-07-10", deadlineLabel: "10 Jul 2026",
-    desc: "₹200 crore mission (ANRF + Ministry of Jal Shakti). Up to ₹20 Crore per consortium for water resource management, drinking water, climate resilience and water-use efficiency R&D. Open to universities, national labs, startups and MSMEs.",
-    url: "https://anrfonline.in/ANRF/mahawp_anrf?HomePage=New"
-  },
-  {
-    ref: "ICSSR/DF/26-27",
-    title: "ICSSR Doctoral Fellowships 2026-27",
-    org: "ICSSR", cat: "Social Sciences", tier: 1,
-    deadlineDate: "2026-07-14", deadlineLabel: "14 Jul 2026",
-    desc: "Full-Term and Short-Term Doctoral Fellowship Schemes for FY 2026-27. Open to PhD scholars below 40 years in social sciences registered at a recognised Indian university.",
-    url: "https://icssr.org/announcements/call-applications-icssrs-doctoral-fellowships-financial-year-2026-27"
-  },
-  {
-    ref: "ICSSR/NSTC-TW/26",
-    title: "ICSSR-NSTC (Taiwan) Joint Call for Research Proposals 2026",
-    org: "ICSSR", cat: "International Collaboration", tier: 2,
-    deadlineDate: "2026-08-03", deadlineLabel: "3 Aug 2026",
-    desc: "Bilateral India-Taiwan joint research in Social Sciences & Humanities. Funding up to ₹12L per project; 5 projects supported. Joint submission with a Taiwanese co-PI via NSTC required.",
-    url: "https://icssr.org/announcements/icssr-nstc-taiwan-joint-call-research-proposals-2026"
-  },
+
+  // ── DST / USISTEF ───────────────────────────────────────────
   {
     ref: "DST/JSPS-IJ/2026",
     title: "DST-JSPS Indo-Japan Cooperative Science Programme 2026",
     org: "DST", cat: "International Collaboration", tier: 2,
     deadlineDate: "2026-09-03", deadlineLabel: "3 Sep 2026",
-    desc: "Bilateral joint research call under the India-Japan Cooperative Science Programme. Open to Indian researchers for collaborative projects with Japanese counterparts across science and technology domains.",
-    url: "https://phdtalks.org/2026/06/dst-jsps-call-for-proposal-2026.html"
+    desc: "Bilateral joint research under India-Japan Cooperative Science Programme. Open to Indian researchers for collaborative projects with Japanese counterparts across science and technology domains.",
+    url: "https://phdtalks.org/2026/06/dst-jsps-call-for-proposal-2026.html",
+    docType: "page"
   },
 
-  // ── NEW GRANTS ADDED 3 Jul 2026 ─────────────────────────────
-  {
-    ref: "ICMR/UNNATI-P2/EOI",
-    title: "ICMR UNNATI Phase 2 — India-Specific Growth Standards for Children",
-    org: "ICMR", cat: "Biomedical & Health", tier: 3,
-    deadlineDate: "2026-07-22", deadlineLabel: "22 Jul 2026",
-    isNew: true,
-    desc: "EOI for multicentre study to develop India-specific growth and development standards for children aged 2–18 years, replacing reliance on WHO international benchmarks. ICMR invites institutions with paediatric research capacity.",
-    url: "https://www.icmr.gov.in/icmrobject/uploads/Call/1782819333_eoiunnatiphase2.pdf",
-    docType: "page"
-  },
-  {
-    ref: "ICMR/NMC-MEQR/2026",
-    title: "ICMR-NMC Joint Call — Research for Quality of Medical Education",
-    org: "ICMR", cat: "Biomedical & Health", tier: 2,
-    deadlineDate: "2026-08-21", deadlineLabel: "21 Aug 2026, 17:00 hrs",
-    isNew: true,
-    desc: "Joint initiative of ICMR and National Medical Commission (NMC) for research proposals focused on strengthening and enhancing quality of medical education in India.",
-    url: "https://www.icmr.gov.in/call-for-proposals",
-    docType: "page"
-  },
+  // ── ANRF ────────────────────────────────────────────────────
   {
     ref: "ANRF/RF/2026",
     title: "ANRF-Ramanujan Fellowship 2026",
@@ -256,7 +205,7 @@ function docType(g){
 function deadlineBar(g){
   const d=daysLeft(g);
   if(d===null) return `<div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--line)"></div></div>`;
-  const pct=d<=0?100:Math.max(6,Math.min(100,Math.round((1-d/30)*100)));
+  const pct=d<=0?100:Math.max(6,Math.min(100,Math.round((1-d/45)*100)));
   const color=d<=7?'var(--rust)':d<=21?'var(--amber)':'var(--sage)';
   return `<div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>`;
 }
@@ -297,25 +246,16 @@ function renderStats(filtered){
 }
 
 function copyLink(url){
-  const showToast = () => {
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 1400);
-  };
-  // Modern clipboard API
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(url).then(showToast).catch(()=>fallbackCopy(url, showToast));
-  } else {
-    fallbackCopy(url, showToast);
-  }
+  const showToast=()=>{const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400);};
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(url).then(showToast).catch(()=>fallbackCopy(url,showToast));
+  } else { fallbackCopy(url,showToast); }
 }
-function fallbackCopy(url, cb){
-  const el = document.createElement('textarea');
-  el.value = url;
-  el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
-  document.body.appendChild(el);
-  el.focus(); el.select();
-  try { document.execCommand('copy'); cb(); } catch(e) { prompt('Copy this link:', url); }
+function fallbackCopy(url,cb){
+  const el=document.createElement('textarea');
+  el.value=url; el.style.cssText='position:fixed;top:-9999px;left:-9999px;opacity:0';
+  document.body.appendChild(el); el.focus(); el.select();
+  try{document.execCommand('copy');cb();}catch(e){prompt('Copy this link:',url);}
   document.body.removeChild(el);
 }
 
@@ -344,17 +284,17 @@ function render(){
     const dc=u==='critical'?'critical':u==='warn'?'warn':u==='rolling'?'rolling':u==='closed'?'closed':'ok';
     const dt=d===null?g.deadlineLabel:d<0?'Deadline passed — verify':d===0?'Closes today':`${d} days left`;
     const docL=docType(g)==='pdf'?'<span class="doc-icon">📄</span>PDF':'<span class="doc-icon">🔗</span>Page';
-    const newBadge=g.isNew?'<span class="new-badge">NEW</span>':'';
+    const nb=g.isNew?'<span class="new-badge">NEW</span>':'';
     return `<div class="card">
       <div class="card-head">
         <span class="stamp ${sc}">${st}</span>
         <div class="card-ref">REF ${g.ref}</div>
         <div class="tag-row"><span class="tag tag-org">${g.org}</span><span class="tag tag-cat">${g.cat}</span></div>
-        <div class="card-title">${g.title}${newBadge}</div>
+        <div class="card-title">${g.title}${nb}</div>
       </div>
       <div class="card-body">
         <div class="desc">${g.desc}</div>
-        <div class="meta-row"><span class="tier" title="${tierLabel(g.tier)}">${tierDots(g.tier)} ${tierLabel(g.tier)}</span></div>
+        <div class="tier" title="${tierLabel(g.tier)}">${tierDots(g.tier)} ${tierLabel(g.tier)}</div>
         <div>
           <div class="deadline-line">Deadline: <b class="${dc}">${dt}</b> <span style="opacity:.6">· ${g.deadlineLabel}</span></div>
           ${deadlineBar(g)}
@@ -373,10 +313,10 @@ document.getElementById('orgFilter').addEventListener('change',e=>{activeOrg=e.t
 document.getElementById('catFilter').addEventListener('change',e=>{activeCat=e.target.value;render();});
 document.getElementById('sortBy').addEventListener('change',e=>{sortKey=e.target.value;render();});
 
-const today=new Date();
 populateFilters();
 renderTicker();
 render();
 </script>
 </body>
 </html>
+
