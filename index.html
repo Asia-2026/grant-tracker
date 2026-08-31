@@ -121,13 +121,40 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,32px);lette
 // ─────────────────────────────────────────────────────────────
 const GRANTS = [
 
-  // ── NEW — added 25 Aug 2026 ─────────────────────────────────
+  // ── NEW — added 8 Sep 2026 (grants only, exact links) ───────
+  {
+    ref: "ICSSR/MMRP/26-27",
+    title: "ICSSR Major & Minor Research Projects Scheme 2026-27",
+    org: "ICSSR", cat: "Social Sciences", tier: 2,
+    deadlineDate: "2026-09-14", deadlineLabel: "14 Sep 2026 (extended)",
+    isNew: true,
+    desc: "Research project grants for Indian scholars, researchers and academicians in social sciences and humanities. Up to ₹30 lakh for Major Research Projects and ₹15 lakh for Minor Research Projects, across 32 identified research domains.",
+    url: "https://icssr.org/announcements/call-project-proposals-under-scheme-major-and-minor-research-projects-2026-27"
+  },
+  {
+    ref: "ICSSR/JSPS-JP/FY27",
+    title: "ICSSR-JSPS (Japan) Joint Call for Research Proposals FY 2027",
+    org: "ICSSR", cat: "International Collaboration", tier: 2,
+    deadlineDate: "2026-09-03", deadlineLabel: "3 Sep 2026",
+    isNew: true,
+    desc: "Bilateral India-Japan joint research grant in social sciences and humanities. Up to ₹14 lakh over 2 years for joint research projects, or ₹7 lakh for joint seminars. Requires matched applications from both an Indian and a Japanese team leader.",
+    url: "https://icssr.org/announcements/icssr-jsps-japan-joint-call-research-proposals-fy-2027"
+  },
+  {
+    ref: "ANRF/ARG/2026",
+    title: "ANRF Advanced Research Grant (ARG)",
+    org: "ANRF", cat: "Science & Engineering", tier: 3,
+    deadlineDate: null, deadlineLabel: "Rolling — check ANRF portal for current cycle",
+    isNew: true,
+    desc: "High-impact interdisciplinary research grant across science, engineering and applied fields. Funding capped at ₹5 Crore for up to 5 years. Open to PhD holders at recognised institutions with sufficient service duration.",
+    url: "https://anrfonline.in/",
+    docType: "page"
+  },
   {
     ref: "DRDO/2CYCLE/26",
     title: "DRDO — Second Cycle Research Project Proposals 2026",
     org: "DRDO", cat: "Science & Engineering", tier: 3,
     deadlineDate: "2026-08-31", deadlineLabel: "31 Aug 2026",
-    isNew: true,
     desc: "Second cycle call across DRDO's research boards (AR&DB, NRB, ARMREB, LSRB, DFTM, DIA-CoEs, TDF & EMR programmes) covering AI & ML, Quantum Technologies, Cyber Security, Robotics, Biomedical Engineering, Advanced Materials, Photonics, Space Technologies and more. Open to academic institutions and researchers nationwide.",
     url: "https://academyresearch.drdo.gov.in/",
     docType: "page"
@@ -137,33 +164,12 @@ const GRANTS = [
     title: "ICMR — Setting up Viral Research & Diagnosis Laboratories (VRDL)",
     org: "ICMR", cat: "Biomedical & Health", tier: 3,
     deadlineDate: "2026-09-30", deadlineLabel: "30 Sep 2026",
-    isNew: true,
     desc: "Call for proposals to establish Viral Research and Diagnosis Laboratories (VRDL) in medical colleges, hospitals and medical institutions — part of ICMR's network for managing viral epidemics and outbreak diagnostics.",
     url: "https://www.icmr.gov.in/virus-research-diagnostic-laboratory-vrdl-network",
     docType: "page"
   },
-  {
-    ref: "ICMR/TRC-NE/2026",
-    title: "ICMR — Technical Resource Centres in the North-Eastern States",
-    org: "ICMR", cat: "Biomedical & Health", tier: 3,
-    deadlineDate: "2026-09-15", deadlineLabel: "15 Sep 2026",
-    isNew: true,
-    desc: "EOI for establishing Technical Resource Centres across the North-Eastern states to strengthen regional research and diagnostic capacity in the region.",
-    url: "https://www.icmr.gov.in/call-for-proposals",
-    docType: "page"
-  },
 
   // ── ICMR ────────────────────────────────────────────────────
- 
-  {
-    ref: "ICMR/TB-SLUM/EOI",
-    title: "ICMR Delhi TB Free Slum Demonstration Project — EOI",
-    org: "ICMR", cat: "Biomedical & Health", tier: 2,
-    deadlineDate: "2026-08-29", deadlineLabel: "29 Aug 2026",
-    desc: "EOI for a new urban TB elimination demonstration project targeting Delhi slums under the ICMR TB Research Accelerator Program. Focuses on implementation and operational research for TB-free urban communities.",
-    url: "https://www.icmr.gov.in/call-for-proposals",
-    docType: "page"
-  },
   {
     ref: "ICMR/CAR-MD/SPL",
     title: "ICMR Special Call — Centres for Advanced Research on Medical Devices",
